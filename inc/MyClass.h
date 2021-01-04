@@ -9,34 +9,30 @@
 #include "serialize/oarchive.hpp"
 #include "serialize/iarchive.hpp"
 
-class MyClass
-{
+class MyClass {
     friend class archive::oarchive;
+
     friend class archive::iarchive;
 
 private:
-    template <class Archive>
-    void serialize(Archive &ar)
-    {
-        printf("Hello");
+    template<class Archive>
+    void serialize(Archive &ar) {
         ar << e1;
         ar << e2;
         ar << e3;
     }
 
-    template <class Archive>
-    void unserialize(Archive &ar)
-    {
+    template<class Archive>
+    void deserialize(Archive &ar) {
         ar >> e1;
         ar >> e2;
         ar >> e3;
     }
 
 public:
-    MyClass(/* args */)
-    {
-        srand(time(NULL));
+    MyClass(/* args */) {
     }
+
     ~MyClass() {}
 
     std::vector<int> e1;

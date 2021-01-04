@@ -46,7 +46,7 @@ namespace archive
                     arg_indx_begin += argBytes;
                 }
             }
-            unserialize(target);
+            deserialize(target);
 
             return *this;
         }
@@ -58,7 +58,7 @@ namespace archive
         */
         template <typename _T,
                   std::enable_if_t<std::is_fundamental<_T>::value, bool> = true>
-        void unserialize(_T &target)
+        void deserialize(_T &target)
         {
             int disp_unit = sizeof(_T);
             int count = C[arg_No].first;
@@ -68,7 +68,7 @@ namespace archive
         }
 
         template <typename TYPE>
-        void unserialize(std::vector<TYPE> &target)
+        void deserialize(std::vector<TYPE> &target)
         {
             int disp_unit = sizeof(TYPE);
             int count = C[arg_No].first;
@@ -79,7 +79,7 @@ namespace archive
         }
 
         template <typename TYPE>
-        void unserialize(std::set<TYPE> &target)
+        void deserialize(std::set<TYPE> &target)
         {
             int disp_unit = sizeof(TYPE);
             int count = C[arg_No].first;
@@ -98,7 +98,7 @@ namespace archive
         }
 
         template <typename TYPE>
-        void unserialize(std::list<TYPE> &target)
+        void deserialize(std::list<TYPE> &target)
         {
             int disp_unit = sizeof(TYPE);
             int count = C[arg_No].first;
@@ -117,7 +117,7 @@ namespace archive
         }
 
         template <typename TYPE>
-        void unserialize(std::queue<TYPE> &target)
+        void deserialize(std::queue<TYPE> &target)
         {
             int disp_unit = sizeof(TYPE);
             int count = C[arg_No].first;
@@ -136,7 +136,7 @@ namespace archive
         }
 
         template <typename _Ty1, typename _Ty2>
-        void unserialize(std::map<_Ty1, _Ty2> &target)
+        void deserialize(std::map<_Ty1, _Ty2> &target)
         {
             int disp_unit = sizeof(int);
             int count = C[arg_No].first;
@@ -150,14 +150,14 @@ namespace archive
             for (int i = 0; i < mapSize; i++)
             {
                 _Ty1 key;
-                unserialize(key);
+                deserialize(key);
                 _Ty2 val;
-                unserialize(val);
+                deserialize(val);
                 target.insert(std::make_pair(key, val));
             }
         }
 
-        void unserialize(std::string &target)
+        void deserialize(std::string &target)
         {
             int disp_unit = sizeof(char);
             int count = C[arg_No].first;
@@ -172,9 +172,9 @@ namespace archive
                                        !std::is_fundamental<TYPE>::value &&
                                        !std::is_same<TYPE, std::string>::value,
                                    bool> = true>
-        void unserialize(TYPE &src)
+        void deserialize(TYPE &src)
         {
-            src.unserialize(*this);
+            src.deserialize(*this);
         }
     };
 }; // namespace archive

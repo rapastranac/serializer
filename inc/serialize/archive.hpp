@@ -28,8 +28,7 @@
 * rapastranac@gmail.com
 */
 
-/* 
-* Non copyable structure
+/*
 * it contains serialized data in bytes
 |NUM_ARGS  |
 |  ARG1    |
