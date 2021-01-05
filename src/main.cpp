@@ -27,9 +27,10 @@ int main() {
     myQueue.push(56.30501505);
     std::list<float> myList{15.516505, 1.56156156, 56.30501505};
 
+    // serialization into the stream *****************************
     oa << id << str << myMap;
     oa << ins << mySet << myQueue << myList;
-
+    // ***********************************************************
     archive::stream is(os);      // stream to received bytes
     archive::iarchive ia(is); // archive in charge of deserializing
 
@@ -41,10 +42,13 @@ int main() {
     std::queue<float> myQueue_received;
     std::list<float> myList_received;
 
+    // deserialization from stream ***************************
     ia >> id_received >> str_received;
     ia >> myMap_received >> ins_received;
     ia >> mySet_received >> myQueue_received;
     ia >> myList_received;
+    // ***********************************************************
+
 
     std::string b = id == id_received ? "true" : "false";
     std::cout << "id successfully deserialized : " << b << "\n";
