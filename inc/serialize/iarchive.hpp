@@ -60,7 +60,6 @@ namespace archive
                   std::enable_if_t<std::is_fundamental<_T>::value, bool> = true>
         void deserialize(_T &target)
         {
-            int disp_unit = sizeof(_T);
             int count = C[arg_No].first;
             int start = C[arg_No].second;
             std::memcpy(&target, &buffer[start], count);
@@ -139,7 +138,6 @@ namespace archive
         void deserialize(std::map<_Ty1, _Ty2> &target)
         {
             int disp_unit = sizeof(int);
-            int count = C[arg_No].first;
             int start = C[arg_No].second;
             int mapSize;
 

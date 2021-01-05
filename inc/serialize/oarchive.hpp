@@ -80,9 +80,8 @@ namespace archive {
         }
 
         /*
-        integral types:         bool, char, char8_t, char16_t, char32_t, wchar_t, short, int, long, long long
-        floating point types:   float, double, long double
-        */
+         * fundamental types
+         * */
         template<typename _T,
                 std::enable_if_t<std::is_fundamental<_T>::value, bool> = true>
         void serialize(const _T &src) {
@@ -181,9 +180,7 @@ namespace archive {
 
             for (auto const &[key, val] : src) {
                 serialize(key);
-                finishBuffer();
                 serialize(val);
-                finishBuffer();
             }
         }
 
