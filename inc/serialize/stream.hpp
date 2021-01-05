@@ -79,6 +79,12 @@ namespace archive
                 delete[] buffer;
         }
 
+        // returns buffer size in Bytes
+        auto size()
+        {
+            return Bytes;
+        }
+
     private:
         int Bytes;
         char *buffer = nullptr;
