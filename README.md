@@ -1,4 +1,4 @@
-Simple serialization in C++
+*Simple serialization in C++*
 
 This is header only tool, and therefore no need of complicated installation. Inspired on Boost and Cereal
 
@@ -10,5 +10,3 @@ Example with several types is shown in the git, main.
 
 It is not super optimized but it is functional and easy to use. 
 
-
-[![Build Status](https://travis-ci.org/rapastranac/serialize.png?branch=master)](https://travis-ci.org/rapastranac/serialize)
