@@ -43,96 +43,76 @@
 
 //specialize a type for all of the STL containers.
 //https://stackoverflow.com/a/31105859/5248548
-namespace is_stl_container_impl
-{
-    template <typename T>
-    struct is_stl_container : std::false_type
-    {
+namespace is_stl_container_impl {
+    template<typename T>
+    struct is_stl_container : std::false_type {
     };
-    template <typename T, std::size_t N>
-    struct is_stl_container<std::array<T, N>> : std::true_type
-    {
+    template<typename T, std::size_t N>
+    struct is_stl_container<std::array<T, N>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::vector<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::vector<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::deque<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::deque<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::list<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::list<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::set<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::set<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::unordered_set<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::unordered_set<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::multiset<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::multiset<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::map<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::map<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::multimap<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::multimap<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::unordered_map<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::unordered_map<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::unordered_multimap<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::unordered_multimap<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::queue<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::queue<Args...>> : std::true_type {
     };
-    template <typename... Args>
-    struct is_stl_container<std::priority_queue<Args...>> : std::true_type
-    {
+    template<typename... Args>
+    struct is_stl_container<std::priority_queue<Args...>> : std::true_type {
     };
 } // namespace is_stl_container_impl
 
 //type trait to utilize the implementation type traits as well as decay the type
-template <typename T>
-struct is_stl_container
-{
+template<typename T>
+struct is_stl_container {
     static constexpr bool const value = is_stl_container_impl::is_stl_container<std::decay_t<T>>::value;
 };
 
-namespace archive
-{
-    class archive_parent
-    {
-    private:
-        archive::stream *stream = nullptr;     // pointer to stream
-        int NUM_ARGS;                          // Number of arguments attached to stream
-        std::vector<std::pair<int, char *>> C; // temporary container to store buffer section while building stream
-        int Bytes;                             // number of bytes to be contained in stream
+namespace serializer {
+    class archive {
+    protected:
+        stream &strm;             // stream
+        int NUM_ARGS;                           // Number of arguments attached to stream
+        std::vector<std::pair<int, char *>> C;  // temporary container to store buffer section while building stream
+        int Bytes;                              // number of bytes to be contained in stream
 
     public:
-        archive_parent() {}
-        archive_parent(archive::stream &stream)
-        {
+        archive(serializer::stream &str) : strm(str) {
             this->NUM_ARGS = 0;
             this->Bytes = 0;
-            this->stream = &stream;
         }
 
-        virtual ~archive_parent()
-        {
+        virtual ~archive() {
         }
+
+        auto size() { return Bytes; }
     };
-}; // namespace archive
+}; // namespace serializer
 
 #endif

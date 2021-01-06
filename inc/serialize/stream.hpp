@@ -4,7 +4,7 @@
 #include <memory>
 #include <cstring>
 
-namespace archive
+namespace serializer
 {
 
     class stream
@@ -89,6 +89,6 @@ namespace archive
         int Bytes;
         char *buffer = nullptr;
     };
-} // namespace archive
+} // namespace serializer
 
 #endif

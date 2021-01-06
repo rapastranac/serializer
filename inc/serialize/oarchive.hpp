@@ -3,20 +3,11 @@
 
 #include "archive.hpp"
 
-namespace archive {
-    class oarchive : public archive_parent {
-
-    private:
-        archive::stream *stream = nullptr;     // pointer to stream
-        int NUM_ARGS;                          // Number of arguments attached to stream
-        std::vector<std::pair<int, char *>> C; // temporary container to store buffer section while building stream
-        int Bytes;                             // number of bytes to be contained in stream
+namespace serializer {
+    class oarchive : public archive {
 
     public:
-        oarchive(archive::stream &stream) {
-            this->NUM_ARGS = 0;
-            this->Bytes = 0;
-            this->stream = &stream;
+        oarchive(serializer::stream &stream) : archive(stream) {
         }
 
         ~oarchive() {
@@ -28,53 +19,30 @@ namespace archive {
         template<typename TYPE>
         oarchive &operator<<(TYPE &src) {
             serialize(src);
-            finishBuffer();
+            fillBuffer();
             return *this;
         }
 
     private:
-        void createBuffer() {
-            int bytes = (NUM_ARGS + 1) * sizeof(int);
-            Bytes += bytes;
-            stream->allocate(Bytes);
-            int position = 0;
-            int count = sizeof(int);
-            std::memcpy(&stream[position], &NUM_ARGS, count);
-            position += count;
-
-            for (int i = 0; i < C.size(); i++) {
-                count = sizeof(int);
-                std::memcpy(&stream[position], &C[i].first, count);
-                position += count;
-            }
-
-            for (int i = 0; i < C.size(); i++) {
-                count = C[i].first;
-                std::memcpy(&stream[position], C[i].second, count);
-                position += count;
-            }
-        }
-
-        void finishBuffer() {
+        void fillBuffer() {
             int counter = 0;
             int count;
 
             int firstBytes = (NUM_ARGS + 1) * sizeof(int);
-            stream->allocate(Bytes + firstBytes);
-            char *buf = &stream->operator[](0); //pointer to buffer in stream
+            strm.allocate(Bytes + firstBytes);
 
-            std::memcpy(&buf[0], &NUM_ARGS, sizeof(int)); //NUM_ARGS copied into stream
+            std::memcpy(&strm[0], &NUM_ARGS, sizeof(int)); //NUM_ARGS copied into stream
             counter += sizeof(int);
 
             for (int i = 0; i < NUM_ARGS; i++) {
                 count = sizeof(int);
-                std::memcpy(&buf[counter], &C[i].first, count); //Bytes count copied
+                std::memcpy(&strm[counter], &C[i].first, count); //Bytes count copied
                 counter += sizeof(int);
             }
 
             for (size_t i = 0; i < NUM_ARGS; i++) {
                 count = C[i].first;
-                std::memcpy(&buf[counter], C[i].second, count); //actual Bytes copied
+                std::memcpy(&strm[counter], C[i].second, count); //actual Bytes copied
                 counter += C[i].first;
             }
         }
@@ -205,6 +173,6 @@ namespace archive {
         }
     };
 
-}; // namespace archive
+}; // namespace serializer
 
 #endif

@@ -10,9 +10,9 @@
 #include "serialize/iarchive.hpp"
 
 class MyClass {
-    friend class archive::oarchive;
+    friend class serializer::oarchive;
 
-    friend class archive::iarchive;
+    friend class serializer::iarchive;
 
 private:
     template<class Archive>

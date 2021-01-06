@@ -6,8 +6,8 @@
 
 int main() {
 
-    archive::stream os;          // stream to be sent
-    archive::oarchive oa(os); // archive in charge of serializing
+    serializer::stream os;          // stream to be sent
+    serializer::oarchive oa(os); // serializer in charge of serializing
 
     double id = -1.156;
     std::string str{"This is a sentence"};
@@ -31,8 +31,8 @@ int main() {
     oa << id << str << myMap;
     oa << ins << mySet << myQueue << myList;
     // ***********************************************************
-    archive::stream is(os);      // stream to received bytes
-    archive::iarchive ia(is); // archive in charge of deserializing
+    serializer::stream is(os);      // stream to received bytes
+    serializer::iarchive ia(is); // serializer in charge of deserializing
 
     double id_received;
     std::string str_received;
