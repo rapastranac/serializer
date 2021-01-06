@@ -11,4 +11,4 @@ Example with several types is shown in the git, main.
 It is not super optimized but it is functional and easy to use. 
 
 
-[![Inline docs](http://inch-ci.org/github/rapastranac/serialize.svg?branch=main)](http://inch-ci.org/github/rapastranac/serialize)
+[![Build Status](https://travis-ci.org/rapastranac/serialize.png?branch=master)](https://travis-ci.org/rapastranac/serialize)
