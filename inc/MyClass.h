@@ -10,23 +10,15 @@
 #include "serialize/iarchive.hpp"
 
 class MyClass {
-    friend class serializer::oarchive;
-
-    friend class serializer::iarchive;
+    friend class serializer::archive;
 
 private:
-    template<class Archive>
-    void serialize(Archive &ar) {
-        ar << e1;
-        ar << e2;
-        ar << e3;
-    }
 
     template<class Archive>
-    void deserialize(Archive &ar) {
-        ar >> e1;
-        ar >> e2;
-        ar >> e3;
+    void serializer(Archive &ar) {
+        ar(e1);
+        ar(e2);
+        ar(e3);
     }
 
 public:
@@ -34,6 +26,10 @@ public:
     }
 
     ~MyClass() {}
+
+    bool operator==(const MyClass &b) const {
+        return this->e1 == b.e1 && this->e2 == b.e2 && this->e3 == b.e3;
+    }
 
     std::vector<int> e1;
     std::set<int> e2;

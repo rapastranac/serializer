@@ -4,7 +4,8 @@
 #include "archive.hpp"
 
 namespace serializer {
-    class iarchive : public archive {
+    class iarchive : protected archive {
+        friend class archive;
 
     private:
         std::vector<std::pair<int, int>> C; // temporary container to store argument location in buffer
@@ -12,11 +13,11 @@ namespace serializer {
 
     public:
         //https://stackoverflow.com/a/23647515/5248548
-        iarchive(serializer::stream &stream) : archive(stream) {
+        explicit iarchive(serializer::stream &stream) : archive(stream) {
             this->arg_No = 0;
         }
 
-        ~iarchive() {}
+        ~iarchive() override {}
 
         template<typename TYPE>
         iarchive &operator>>(TYPE &target) {
@@ -40,7 +41,7 @@ namespace serializer {
             return *this;
         }
 
-    private:
+    protected:
         /*
          * fundamental types
          * */
@@ -148,9 +149,22 @@ namespace serializer {
                                  !std::is_same<TYPE, std::string>::value,
                         bool> = true>
         void deserialize(TYPE &src) {
-            src.deserialize(*this);
+            auto &tmp = dynamic_cast<archive &>(*this);
+            tmp.template pass(*this, src, 1);
         }
     };
+
+    template<class TYPE>
+    void archive::operator()(TYPE &&data) {
+        if (this->cas == 0) {
+            auto &tmp = static_cast<oarchive &>(*this); //down casting
+            tmp.serialize(data);
+        } else if (this->cas == 1) {
+            auto &tmp = static_cast<iarchive &>(*this); //down casting
+            tmp.deserialize(data);
+        }
+
+    }
 }; // namespace serializer
 
 #endif

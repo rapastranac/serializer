@@ -9,7 +9,8 @@ set(SOURCE_FILES
         inc/serialize/archive.hpp
         inc/serialize/iarchive.hpp
         inc/serialize/oarchive.hpp
-        inc/serialize/stream.hpp)
+        inc/serialize/stream.hpp
+        )
 
 # Add executable target with source files listed in SOURCE_FILES variable
 add_executable(project ${SOURCE_FILES})

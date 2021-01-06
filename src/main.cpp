@@ -27,9 +27,18 @@ int main() {
     myQueue.push(56.30501505);
     std::list<float> myList{15.516505, 1.56156156, 56.30501505};
 
-    // serialization into the stream *****************************
-    oa << id << str << myMap;
-    oa << ins << mySet << myQueue << myList;
+    // serializer into the stream *****************************
+    //oa << ins;
+
+    //return 0;
+    //oa << id << str << myMap;
+    oa << id;
+    oa << str;
+    oa << myMap;
+    oa << ins;
+    oa << mySet;
+    oa << myQueue;
+    oa << myList;
     // ***********************************************************
     serializer::stream is(os);      // stream to received bytes
     serializer::iarchive ia(is); // serializer in charge of deserializing
@@ -43,10 +52,15 @@ int main() {
     std::list<float> myList_received;
 
     // deserialization from stream ***************************
-    ia >> id_received >> str_received;
-    ia >> myMap_received >> ins_received;
-    ia >> mySet_received >> myQueue_received;
+
+    ia >> id_received;
+    ia >> str_received;
+    ia >> myMap_received;
+    ia >> ins_received;
+    ia >> mySet_received;
+    ia >> myQueue_received;
     ia >> myList_received;
+    //ia >> id_received >> str_received;
     // ***********************************************************
 
 
@@ -58,5 +72,7 @@ int main() {
     std::cout << "mySet successfully deserialized : " << b << "\n";
     b = myList == myList_received ? "true" : "false";
     std::cout << "myList successfully deserialized : " << b << "\n";
+    b = ins == ins_received ? "true" : "false";
+    std::cout << "ins successfully deserialized : " << b << "\n";
     return 0;
 }

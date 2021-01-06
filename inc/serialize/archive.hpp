@@ -95,22 +95,42 @@ struct is_stl_container {
 };
 
 namespace serializer {
+    class oarchive;
+
+    class iarchive;
+
     class archive {
+        friend class oarchive;
+
+        friend class iarchive;
+
     protected:
         stream &strm;             // stream
         int NUM_ARGS;                           // Number of arguments attached to stream
         int Bytes;                              // number of bytes to be contained in stream
 
     public:
-        archive(serializer::stream &str) : strm(str) {
+        explicit archive(serializer::stream &str) : strm(str) {
             this->NUM_ARGS = 0;
             this->Bytes = 0;
         }
 
-        virtual ~archive() {
+        virtual ~archive() = default;
+
+        auto size() const { return Bytes; }
+
+        template<class TYPE>
+        void operator()(TYPE &&data);
+
+    protected:
+        template<class CHILD, class TYPE>
+        void pass(CHILD &child, TYPE &data, const int cas) {
+            //data.serializer(child);
+            this->cas = cas;
+            data.serializer(*this);
         }
 
-        auto size() { return Bytes; }
+        int cas;
     };
 }; // namespace serializer
 

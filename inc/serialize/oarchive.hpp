@@ -4,15 +4,18 @@
 #include "archive.hpp"
 
 namespace serializer {
-    class oarchive : public archive {
+
+    class oarchive : protected archive {
+        friend class archive;
+
     private:
         std::vector<std::pair<int, char *>> C;  // temporary container to store buffer sections while building stream
 
     public:
-        oarchive(serializer::stream &stream) : archive(stream) {
+        explicit oarchive(serializer::stream &stream) : archive(stream) {
         }
 
-        ~oarchive() {
+        ~oarchive() override {
             for (int i = 0; i < C.size(); i++) {
                 delete[] C[i].second;
             }
@@ -25,7 +28,7 @@ namespace serializer {
             return *this;
         }
 
-    private:
+    protected:
         void fillBuffer() {
             int counter = 0;
             int count;
@@ -171,7 +174,9 @@ namespace serializer {
                                  !std::is_same<TYPE, std::string>::value,
                         bool> = true>
         void serialize(TYPE &src) {
-            src.serialize(*this);
+            auto &tmp = dynamic_cast<archive &>(*this);
+            //tmp.template operator()(src);
+            tmp.template pass(*this, src, 0);
         }
     };
 
