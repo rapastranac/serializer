@@ -1,4 +1,4 @@
-Simple serialization in C++
+## **Simple serialization in C++**
 
 This is header only tool, and therefore no need of complicated installation. Inspired on Boost and Cereal
 
