@@ -7,7 +7,7 @@ namespace serializer {
     class iarchive : public archive {
 
     private:
-        std::vector<std::pair<int, int>> C; // temporary container to store buffer sections while building stream
+        std::vector<std::pair<int, int>> C; // temporary container to store argument location in buffer
         int arg_No;                         // index in stream
 
     public:
@@ -24,15 +24,15 @@ namespace serializer {
                 std::memcpy(&NUM_ARGS, &strm[0], sizeof(int));
                 int idx = sizeof(int);
 
-                int arg_indx_begin = (NUM_ARGS + 1) * sizeof(int);
+                int arg_idx_begin = (NUM_ARGS + 1) * sizeof(int);
 
                 for (int i = 0; i < NUM_ARGS; i++) {
                     int count = sizeof(int);
                     int argBytes;
                     std::memcpy(&argBytes, &strm[idx], count);
                     idx += count;
-                    C.emplace_back(std::make_pair(argBytes, arg_indx_begin));
-                    arg_indx_begin += argBytes;
+                    C.emplace_back(std::make_pair(argBytes, arg_idx_begin));
+                    arg_idx_begin += argBytes;
                 }
             }
             deserialize(target);

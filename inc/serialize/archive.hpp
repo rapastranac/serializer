@@ -99,7 +99,6 @@ namespace serializer {
     protected:
         stream &strm;             // stream
         int NUM_ARGS;                           // Number of arguments attached to stream
-        std::vector<std::pair<int, char *>> C;  // temporary container to store buffer section while building stream
         int Bytes;                              // number of bytes to be contained in stream
 
     public:

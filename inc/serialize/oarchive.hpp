@@ -5,6 +5,8 @@
 
 namespace serializer {
     class oarchive : public archive {
+    private:
+        std::vector<std::pair<int, char *>> C;  // temporary container to store buffer sections while building stream
 
     public:
         oarchive(serializer::stream &stream) : archive(stream) {
