@@ -71,6 +71,10 @@ namespace serializer {
             int start = C[arg_No].second;
             int SIZE = count / disp_unit;
 
+            if (!target.empty()) {
+                target.clear();
+            }
+
             for (int i = 0; i < SIZE; i++) {
                 TYPE item;
                 std::memcpy(&item, &strm[start], disp_unit);
@@ -88,6 +92,10 @@ namespace serializer {
             int start = C[arg_No].second;
             int SIZE = count / disp_unit;
 
+            if (!target.empty()) {
+                target.clear();
+            }
+
             for (int i = 0; i < SIZE; i++) {
                 TYPE item;
                 std::memcpy(&item, &strm[start], disp_unit);
@@ -104,6 +112,11 @@ namespace serializer {
             int count = C[arg_No].first;
             int start = C[arg_No].second;
             int SIZE = count / disp_unit;
+
+            if (!target.empty()) {
+                std::queue<TYPE> empty;
+                std::swap(target, empty);
+            }
 
             for (int i = 0; i < SIZE; i++) {
                 TYPE item;
@@ -124,6 +137,9 @@ namespace serializer {
             std::memcpy(&mapSize, &strm[start], disp_unit);
 
             ++arg_No;
+            if (!target.empty()) {
+                target.clear();
+            }
 
             for (int i = 0; i < mapSize; i++) {
                 _Ty1 key;
